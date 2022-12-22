@@ -1,1 +1,14 @@
+spring:
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_PROPERTIES: true
+    default-property-inclusion: NON_NULL
 
+data:
+  filepath: src/main/resources/example-data.csv

@@ -3,9 +3,11 @@ package com.wandera.hw.notificationcenter.user.core.model;
 import com.wandera.hw.notificationcenter.user.core.model.NotificationId;
 import com.wandera.hw.notificationcenter.user.core.model.NotificationType;
 import com.wandera.hw.notificationcenter.user.core.model.UserId;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class Notification {
 
     // ToDo create Notification detail that will be record

@@ -4,28 +4,32 @@ import com.wandera.hw.notificationcenter.user.core.model.Notification;
 import com.wandera.hw.notificationcenter.user.core.model.NotificationId;
 import com.wandera.hw.notificationcenter.user.core.model.NotificationType;
 import com.wandera.hw.notificationcenter.user.core.model.UserId;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class NotificationEntity {
 
-    // TODO: This may have different structure. Decide later
-    // This also should be a record
-    private final NotificationId notificationId;
-    private final UserId userId;
-    private final LocalDateTime notificationDate;
-    private final NotificationType notificationType;
-    private final String notificationTitle;
-    private final String notificationDetail;
+    private String notificationId;
+    private String userId;
+    private LocalDateTime notificationDate;
+    private String notificationType;
+    private String notificationTitle;
+    private String notificationDetail;
     private boolean read;
 
     public Notification toDomainNotification() {
-        return new Notification(notificationId,
-                userId,
+        return new Notification(new NotificationId(UUID.fromString(notificationId)),
+                new UserId(userId),
                 notificationDate,
-                notificationType,
+                NotificationType.valueOf(notificationType),
                 notificationTitle,
                 notificationDetail
         );
