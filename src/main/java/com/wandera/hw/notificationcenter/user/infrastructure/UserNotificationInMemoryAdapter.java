@@ -42,7 +42,7 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
                 .stream()
                 .map(NotificationEntity::toDomainNotification)
                 .sorted(Notification::compareByDate)
-                .collect(Collectors.groupingBy(Notification::getType));
+                .collect(Collectors.groupingBy(Notification::type));
     }
 
     @Override

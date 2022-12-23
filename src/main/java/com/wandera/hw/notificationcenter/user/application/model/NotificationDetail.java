@@ -14,16 +14,16 @@ public record NotificationDetail(String notificationId,
 
     public static NotificationDetail of(Notification notification) {
         return NotificationDetail.builder()
-                .notificationId(notification.getNotificationId()
+                .notificationId(notification.notificationId()
                         .notificationId()
                         .toString())
-                .userId(notification.getUserId()
+                .userId(notification.userId()
                         .userId())
-                .date(notification.getDate().toString())
-                .type(notification.getType().name())
-                .title(notification.getTitle())
-                .detail(notification.getDetail())
-                .read(notification.isRead())
+                .date(notification.date().toString())
+                .type(notification.type().name())
+                .title(notification.title())
+                .detail(notification.detail())
+                .read(notification.read())
                 .build();
     }
 }

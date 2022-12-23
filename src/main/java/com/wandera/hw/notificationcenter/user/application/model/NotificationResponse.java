@@ -10,8 +10,8 @@ public record NotificationResponse(String notificationId,
 
     public static NotificationResponse of(Notification notification) {
         return new NotificationResponse(
-                notification.getNotificationId().toString(),
-                notification.getDate(),
-                notification.isRead());
+                notification.notificationIdAsString(),
+                notification.date(),
+                notification.read());
     }
 }

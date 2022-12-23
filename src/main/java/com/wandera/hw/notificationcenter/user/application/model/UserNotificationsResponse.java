@@ -20,7 +20,6 @@ public record UserNotificationsResponse(Map<String, List<NotificationResponse>> 
 
                 ));
 
-        // TODO: Maybe create the whole template based od HTTP status codes, etc.
         return Optional.of(new UserNotificationsResponse(responseNotifications));
     }
 }
