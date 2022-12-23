@@ -14,4 +14,6 @@ public interface UserNotificationRepository {
     Optional<Notification> findUserNotification(String userId, String notificationId);
 
     boolean updateNotification(String notificationId, String userId, Object newValue, String fieldName);
+
+    boolean deleteNotification(String userId, String notificationId);
 }

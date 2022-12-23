@@ -7,7 +7,7 @@ import com.wandera.hw.notificationcenter.user.core.model.UserNotificationsQuery;
 import java.util.List;
 import java.util.Map;
 
-public interface GetUserNotifications {
+public interface GetNotifications {
     Map<NotificationType, List<Notification>> handle(UserNotificationsQuery query);
 
 }

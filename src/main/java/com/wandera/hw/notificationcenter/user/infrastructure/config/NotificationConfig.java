@@ -1,10 +1,13 @@
 package com.wandera.hw.notificationcenter.user.infrastructure.config;
 
+import com.wandera.hw.notificationcenter.user.core.port.DeleteNotificationFacade;
 import com.wandera.hw.notificationcenter.user.core.port.GetUserNotificationDetailFacade;
 import com.wandera.hw.notificationcenter.user.core.port.GetUserNotificationFacade;
 import com.wandera.hw.notificationcenter.user.core.port.MarkNotificationAsReadFacade;
-import com.wandera.hw.notificationcenter.user.core.port.incoming.GetUserNotificationDetail;
-import com.wandera.hw.notificationcenter.user.core.port.incoming.GetUserNotifications;
+import com.wandera.hw.notificationcenter.user.core.port.incoming.DeleteNotification;
+import com.wandera.hw.notificationcenter.user.core.port.incoming.GetNotificationDetail;
+import com.wandera.hw.notificationcenter.user.core.port.incoming.GetNotifications;
+import com.wandera.hw.notificationcenter.user.core.port.incoming.MarkNotificationRead;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
 import com.wandera.hw.notificationcenter.user.infrastructure.NotificationCSVLoader;
 import com.wandera.hw.notificationcenter.user.infrastructure.UserNotificationInMemoryAdapter;
@@ -15,18 +18,23 @@ import org.springframework.context.annotation.Configuration;
 public class NotificationConfig {
 
     @Bean
-    public GetUserNotifications getUserNotifications(UserNotificationRepository repository) {
+    public GetNotifications getUserNotifications(UserNotificationRepository repository) {
         return new GetUserNotificationFacade(repository);
     }
 
     @Bean
-    public GetUserNotificationDetail getUserNotificationDetail(UserNotificationRepository repository) {
+    public GetNotificationDetail getUserNotificationDetail(UserNotificationRepository repository) {
         return new GetUserNotificationDetailFacade(repository);
     }
 
     @Bean
-    public MarkNotificationAsReadFacade markNotificationAsRead(UserNotificationRepository repository) {
+    public MarkNotificationRead markNotificationAsRead(UserNotificationRepository repository) {
         return new MarkNotificationAsReadFacade(repository);
+    }
+
+    @Bean
+    public DeleteNotification deleteNotification(UserNotificationRepository repository) {
+        return new DeleteNotificationFacade(repository);
     }
 
     @Bean

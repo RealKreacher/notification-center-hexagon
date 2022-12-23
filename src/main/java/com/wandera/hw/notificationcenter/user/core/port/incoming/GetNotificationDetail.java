@@ -5,7 +5,7 @@ import com.wandera.hw.notificationcenter.user.core.model.UserNotificationDetailQ
 
 import java.util.Optional;
 
-public interface GetUserNotificationDetail {
+public interface GetNotificationDetail {
 
     Optional<Notification> handle(UserNotificationDetailQuery query);
 

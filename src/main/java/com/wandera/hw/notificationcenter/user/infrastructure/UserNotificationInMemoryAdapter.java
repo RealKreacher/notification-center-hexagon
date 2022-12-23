@@ -59,6 +59,12 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
                 .orElse(false);
     }
 
+    @Override
+    public boolean deleteNotification(String userId, String notificationId) {
+        return notifications.getOrDefault(userId, Collections.emptyList())
+                .removeIf(notification -> notification.getNotificationId().equals(notificationId));
+    }
+
     private Optional<NotificationEntity> findNotificationEntity(String userId, String notificationId) {
         return notifications.getOrDefault(userId, Collections.emptyList()).stream()
                 .filter(notificationEntity -> Objects.equals(notificationEntity.getNotificationId(), notificationId))
