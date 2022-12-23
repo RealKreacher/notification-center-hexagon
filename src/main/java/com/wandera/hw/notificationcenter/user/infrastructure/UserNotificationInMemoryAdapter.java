@@ -1,6 +1,7 @@
 package com.wandera.hw.notificationcenter.user.infrastructure;
 
 import com.wandera.hw.notificationcenter.user.core.model.Notification;
+import com.wandera.hw.notificationcenter.user.core.model.NotificationType;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class UserNotificationInMemoryAdapter implements UserNotificationRepository {
 
@@ -19,23 +21,28 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
     public UserNotificationInMemoryAdapter(NotificationCSVLoader csvLoader) {
         // TODO: make this nicer
         var notificationList = csvLoader.loadNotifications();
+
         notifications = new HashMap<>();
         notificationList.forEach(notification -> {
             var userId = notification.getUserId();
-            var newEntry = notifications.getOrDefault(userId, new ArrayList<>());
-            newEntry.add(notification);
-            notifications.put(notification.getUserId(), newEntry);
+            var oldEntry = notifications.getOrDefault(userId, new ArrayList<>());
+            oldEntry.add(notification);
+            notifications.put(userId, oldEntry);
         });
     }
 
-    @Override
-    public List<Notification> findUserNotifications(String userId) {
+    /*
 
+     */
+    @Override
+    public Map<NotificationType, List<Notification>> findUserNotifications(String userId) {
         // ToDO: map shoud probably containt userId object.
         // ToDo if user is not in the map the Errro response should be shown
-        return notifications.getOrDefault(userId, Collections.emptyList()).stream()
+        return notifications.getOrDefault(userId, Collections.emptyList())
+                .stream()
                 .map(NotificationEntity::toDomainNotification)
-                .toList();
+                .sorted(Notification::compareByDate)
+                .collect(Collectors.groupingBy(Notification::getType));
     }
 
     @Override

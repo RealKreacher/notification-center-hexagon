@@ -29,4 +29,13 @@ public class Notification {
     public void markAsRead() {
         read = true;
     }
+
+    public int compareByDate(Notification otherNotification) {
+        return date.compareTo(otherNotification.date);
+    }
+
+    public int compareByType(Notification otherNotification) {
+        return type.compareTo(otherNotification.type);
+    }
+
 }
