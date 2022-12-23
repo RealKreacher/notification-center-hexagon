@@ -30,6 +30,7 @@ public class NotificationCSVLoader {
         var file = new File(path);
         return readFile(file);
     }
+
     public List<NotificationEntity> readFile(File csvFile) {
 
         CsvMapper csvMapper = new CsvMapper();

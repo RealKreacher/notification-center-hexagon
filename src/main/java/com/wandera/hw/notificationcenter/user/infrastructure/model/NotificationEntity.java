@@ -7,7 +7,6 @@ import com.wandera.hw.notificationcenter.user.core.model.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,4 +33,5 @@ public class NotificationEntity {
                 notificationDetail
         );
     }
+
 }

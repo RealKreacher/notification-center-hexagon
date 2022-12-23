@@ -1,7 +1,6 @@
 package com.wandera.hw.notificationcenter.user.infrastructure;
 
 import com.wandera.hw.notificationcenter.user.core.model.Notification;
-import com.wandera.hw.notificationcenter.user.core.model.UserId;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
 
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class UserNotificationInMemoryAdapter implements UserNotificationRepository {
 
@@ -24,18 +24,25 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
             var userId = notification.getUserId();
             var newEntry = notifications.getOrDefault(userId, new ArrayList<>());
             newEntry.add(notification);
-                notifications.put(notification.getUserId(), newEntry);
+            notifications.put(notification.getUserId(), newEntry);
         });
     }
 
     @Override
-    public List<Notification> findUserNotifications(UserId userId) {
+    public List<Notification> findUserNotifications(String userId) {
 
         // ToDO: map shoud probably containt userId object.
         // ToDo if user is not in the map the Errro response should be shown
-        return notifications.getOrDefault(userId.userId(), Collections.emptyList()).stream()
-                .filter(Objects::nonNull)
+        return notifications.getOrDefault(userId, Collections.emptyList()).stream()
                 .map(NotificationEntity::toDomainNotification)
                 .toList();
+    }
+
+    @Override
+    public Optional<Notification> findUserNotification(String userId, String notificationId) {
+        return notifications.getOrDefault(userId, Collections.emptyList()).stream()
+                .filter(notificationEntity -> Objects.equals(notificationEntity.getNotificationId(), notificationId))
+                .findFirst()
+                .map(NotificationEntity::toDomainNotification);
     }
 }

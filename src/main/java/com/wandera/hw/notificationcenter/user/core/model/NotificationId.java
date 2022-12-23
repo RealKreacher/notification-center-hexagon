@@ -4,4 +4,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 public record NotificationId(@NotEmpty UUID notificationId) {
+
+    public static NotificationId of(@NotEmpty String notificationId) {
+        return new NotificationId(UUID.fromString(notificationId));
+    }
 }
