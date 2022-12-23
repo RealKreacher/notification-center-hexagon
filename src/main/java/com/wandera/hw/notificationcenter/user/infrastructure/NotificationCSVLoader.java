@@ -32,7 +32,7 @@ public class NotificationCSVLoader {
     }
 
     public List<NotificationEntity> readFile(File csvFile) {
-
+        // ToDO this should be done better
         CsvMapper csvMapper = new CsvMapper();
         csvMapper.registerModule(new JavaTimeModule());
         csvMapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);

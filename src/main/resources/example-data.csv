@@ -2,9 +2,9 @@ bb486f1c-bdbc-4abb-8770-29ee51798763;user1;2022-09-25T11:02:04;INFO;Test notific
 dd4c6462-6c62-4561-99ae-d154bb4a4fcf;user1;2022-09-23T11:02:09;INFO;Test notification 2;Notification test description 2.;false
 a2cd6365-0bc9-42a0-8161-5316bc535416;user2;2022-09-22T11:02:13;BLOCK;Blocked access 1;Block reason: Test block reason.;false
 78a0aa6e-3a59-46d1-9b0a-1ae6573f4d51;user2;2022-09-23T11:02:19;INFO;Test notification 3;Notification test description 3.;false
-a2cd6365-0bc9-42a0-8161-5316bc535417;user3;2022-09-22T11:02:13;BLOCK;Blocked access 2;Block reason: Test block reason.;true
-a2cd6365-0bc9-42a0-8161-5316bc535417;user3;2022-09-22T11:02:15;BLOCK;Blocked access 2;Block reason: Test block reason.;true
-a2cd6365-0bc9-42a0-8161-5316bc535417;user3;2022-09-22T11:02:17;BLOCK;Blocked access 2;Block reason: Test block reason.;true
-a2cd6365-0bc9-42a0-8161-5316bc535417;user3;2022-09-22T11:02:19;BLOCK;Blocked access 2;Block reason: Test block reason.;true
-78a0aa6e-3a59-46d1-9b0a-1ae6573f4d52;user3;2022-09-23T11:02:19;INFO;Test notification 4;Notification test description 4.;true
-78a0aa6e-3a59-46d1-9b0a-1ae6573f4d52;user3;2022-09-23T11:02:21;INFO;Test notification 4;Notification test description 4.;true
+a2cd6365-0bc9-42a0-8161-5316bc535418;user3;2022-09-22T11:02:13;BLOCK;Blocked access 2;Block reason: Test block reason.;false
+a2cd6365-0bc9-42a0-8161-5316bc535417;user3;2022-09-22T11:02:15;BLOCK;Blocked access 2;Block reason: Test block reason.;false
+a2cd6365-0bc9-42a0-8161-5316bc535419;user3;2022-09-22T11:02:17;BLOCK;Blocked access 2;Block reason: Test block reason.;false
+a2cd6365-0bc9-42a0-8161-5316bc535420;user3;2022-09-22T11:02:19;BLOCK;Blocked access 2;Block reason: Test block reason.;false
+78a0aa6e-3a59-46d1-9b0a-1ae6573f4d52;user3;2022-09-23T11:02:19;INFO;Test notification 4;Notification test description 4.;false
+78a0aa6e-3a59-46d1-9b0a-1ae6573f4d52;user3;2022-09-23T11:02:21;INFO;Test notification 4;Notification test description 4.;false

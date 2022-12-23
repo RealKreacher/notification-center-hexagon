@@ -16,14 +16,30 @@ public class Notification {
     private final String detail;
     private boolean read;
 
-    public Notification(NotificationId notificationId, UserId userId, LocalDateTime notificationDate, NotificationType type, String title, String detail) {
+    public Notification(NotificationId notificationId,
+                        UserId userId,
+                        LocalDateTime notificationDate,
+                        NotificationType type,
+                        String title,
+                        String detail) {
+        this(notificationId, userId, notificationDate, type, title, detail, false);
+    }
+
+
+    public Notification(NotificationId notificationId,
+                        UserId userId,
+                        LocalDateTime notificationDate,
+                        NotificationType type,
+                        String title,
+                        String detail,
+                        boolean read) {
         this.notificationId = notificationId;
         this.userId = userId;
         this.date = notificationDate;
         this.type = type;
         this.title = title;
         this.detail = detail;
-        this.read = false;
+        this.read = read;
     }
 
     public void markAsRead() {

@@ -47,9 +47,21 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
 
     @Override
     public Optional<Notification> findUserNotification(String userId, String notificationId) {
+        return findNotificationEntity(userId, notificationId)
+                .map(NotificationEntity::toDomainNotification);
+    }
+
+    @Override
+    public boolean updateNotification(String notificationId, String userId, Object newValue, String fieldName) {
+        // TODO there should just be exception handled by global aop handler
+        return findNotificationEntity(userId, notificationId)
+                .map(entity -> entity.update(newValue, fieldName))
+                .orElse(false);
+    }
+
+    private Optional<NotificationEntity> findNotificationEntity(String userId, String notificationId) {
         return notifications.getOrDefault(userId, Collections.emptyList()).stream()
                 .filter(notificationEntity -> Objects.equals(notificationEntity.getNotificationId(), notificationId))
-                .findFirst()
-                .map(NotificationEntity::toDomainNotification);
+                .findFirst();
     }
 }

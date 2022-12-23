@@ -2,6 +2,7 @@ package com.wandera.hw.notificationcenter.user.infrastructure.config;
 
 import com.wandera.hw.notificationcenter.user.core.port.GetUserNotificationDetailFacade;
 import com.wandera.hw.notificationcenter.user.core.port.GetUserNotificationFacade;
+import com.wandera.hw.notificationcenter.user.core.port.MarkNotificationAsReadFacade;
 import com.wandera.hw.notificationcenter.user.core.port.incoming.GetUserNotificationDetail;
 import com.wandera.hw.notificationcenter.user.core.port.incoming.GetUserNotifications;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
@@ -21,6 +22,11 @@ public class NotificationConfig {
     @Bean
     public GetUserNotificationDetail getUserNotificationDetail(UserNotificationRepository repository) {
         return new GetUserNotificationDetailFacade(repository);
+    }
+
+    @Bean
+    public MarkNotificationAsReadFacade markNotificationAsRead(UserNotificationRepository repository) {
+        return new MarkNotificationAsReadFacade(repository);
     }
 
     @Bean
