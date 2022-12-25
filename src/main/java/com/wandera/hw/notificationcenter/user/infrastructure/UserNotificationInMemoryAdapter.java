@@ -3,7 +3,9 @@ package com.wandera.hw.notificationcenter.user.infrastructure;
 import com.wandera.hw.notificationcenter.user.core.model.Notification;
 import com.wandera.hw.notificationcenter.user.core.model.NotificationType;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
+import com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchUserException;
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class UserNotificationInMemoryAdapter implements UserNotificationRepository {
 
     private final Map<String, List<NotificationEntity>> notifications;
@@ -36,13 +39,17 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
      */
     @Override
     public Map<NotificationType, List<Notification>> findUserNotifications(String userId) {
-        // ToDO: map shoud probably containt userId object.
         // ToDo if user is not in the map the Errro response should be shown
-        return notifications.getOrDefault(userId, Collections.emptyList())
-                .stream()
-                .map(NotificationEntity::toDomainNotification)
-                .sorted(Notification::compareByDate)
-                .collect(Collectors.groupingBy(Notification::type));
+        if(notifications.containsKey(userId)) {
+            return notifications.get(userId)
+                    .stream()
+                    .map(NotificationEntity::toDomainNotification)
+                    .sorted(Notification::compareByDate)
+                    .collect(Collectors.groupingBy(Notification::type));
+        } else {
+            log.error("No user with id: {}", userId);
+            throw new NoSuchUserException("Invalid user ID");
+        }
     }
 
     @Override
