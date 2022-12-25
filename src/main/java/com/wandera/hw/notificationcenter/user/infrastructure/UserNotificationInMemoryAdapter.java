@@ -7,8 +7,8 @@ import com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchUse
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -21,28 +21,26 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
     private final Map<String, List<NotificationEntity>> notifications;
 
     public UserNotificationInMemoryAdapter(NotificationCSVLoader csvLoader) {
-        // TODO: make this nicer
-        var notificationList = csvLoader.loadNotifications();
-
-        notifications = new HashMap<>();
-        notificationList.forEach(notification -> {
-            var userId = notification.getUserId();
-            var oldEntry = notifications.getOrDefault(userId, new ArrayList<>());
-            oldEntry.add(notification);
-            notifications.put(userId, oldEntry);
-        });
+        notifications = csvLoader.loadNotifications();
     }
 
     /*
 
      */
     @Override
-    public Map<NotificationType, List<Notification>> findUserNotifications(String userId) {
+    public List<Notification> findUserNotifications(String userId) {
         return getUserNotifications(userId)
                 .stream()
                 .map(NotificationEntity::toDomainNotification)
                 .sorted(Notification::compareByDate)
-                .collect(Collectors.groupingBy(Notification::type));
+                .collect(Collectors.groupingBy(Notification::type))
+                .values()
+                .stream()
+                .reduce((list1, list2) -> {
+                    list1.addAll(list2);
+                    return list1;
+                })
+                .orElse(Collections.emptyList());
     }
 
     @Override
@@ -71,6 +69,10 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
                 .findFirst();
     }
 
+    /*
+        If there is no user with given ID exception is thrown.
+        The exception is processed in UserNotificationAdvice and error response is generated.
+     */
     private List<NotificationEntity> getUserNotifications(String userId) {
         if (notifications.containsKey(userId)) {
             return notifications.get(userId);

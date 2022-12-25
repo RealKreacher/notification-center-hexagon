@@ -38,6 +38,15 @@ public class NotificationEntity {
         );
     }
 
+    // TODO think about this one
+    /**
+     * Generic method to update any field.
+     * Maybe this is overkill and bad idea since it kinda couple this entity
+     * with the domain model as Fields are specified in specific user cases.
+     * @param newValue
+     * @param fieldToUpdate
+     * @return
+     */
     public boolean update(Object newValue, String fieldToUpdate) {
         try {
             Field field = NotificationEntity.class.getDeclaredField(fieldToUpdate);

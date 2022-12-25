@@ -7,6 +7,12 @@ import java.util.Optional;
 
 public interface GetNotificationDetail {
 
+    /**
+     * Find notification with given ID for specific user.
+     *
+     * @param query containing user id and notification id.
+     * @return Notification or empty Optional if the notification was not found.
+     */
     Optional<Notification> handle(UserNotificationDetailQuery query);
 
 }

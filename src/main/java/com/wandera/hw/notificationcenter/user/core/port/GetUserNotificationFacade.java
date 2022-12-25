@@ -16,7 +16,7 @@ public class GetUserNotificationFacade implements GetNotifications {
     private final UserNotificationRepository repository;
 
     @Override
-    public Map<NotificationType, List<Notification>> handle(UserNotificationsQuery query) {
+    public List<Notification> handle(UserNotificationsQuery query) {
         var userId = query
                 .userId()
                 .userId();

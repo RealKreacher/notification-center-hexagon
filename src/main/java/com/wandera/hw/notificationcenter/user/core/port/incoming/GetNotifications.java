@@ -8,6 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface GetNotifications {
-    Map<NotificationType, List<Notification>> handle(UserNotificationsQuery query);
+
+    /**
+     * Find all notifications for given user id.
+     * The notifications are grouped by type and sort by date ascending.
+     *
+     * @param query Query containing user id
+     * @return List of all notifications for given user.
+     */
+    List<Notification> handle(UserNotificationsQuery query);
 
 }

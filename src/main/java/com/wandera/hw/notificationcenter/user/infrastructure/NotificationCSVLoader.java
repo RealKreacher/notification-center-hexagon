@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +31,22 @@ public class NotificationCSVLoader {
      * Read csv file and map it to the NotificationEntity objects.
      * The path to the CSV file is defined in application properties data -> filepath
      *
-     * @return Mapped list of NotificationEntity objects.
+     * @return Mapped list of NotificationEntity objects linked to their userID.
      */
-    public List<NotificationEntity> loadNotifications() {
+    public Map<String, List<NotificationEntity>> loadNotifications() {
         var file = new File(path);
-        return readFile(file);
+        Map<String, List<NotificationEntity>> notifications = new HashMap<>();
+
+        var entities = readFile(file);
+
+        entities.forEach(notification -> {
+            var userId = notification.getUserId();
+            var oldEntry = notifications.getOrDefault(userId, new ArrayList<>());
+            oldEntry.add(notification);
+            notifications.put(userId, oldEntry);
+        });
+
+        return notifications;
     }
 
     /*

@@ -6,12 +6,14 @@ import java.time.LocalDateTime;
 
 public record NotificationResponse(String notificationId,
                                    LocalDateTime notificationTime,
+                                   String notificationType,
                                    boolean read) {
 
     public static NotificationResponse of(Notification notification) {
         return new NotificationResponse(
                 notification.notificationIdAsString(),
                 notification.date(),
+                notification.type().name(),
                 notification.read());
     }
 }
