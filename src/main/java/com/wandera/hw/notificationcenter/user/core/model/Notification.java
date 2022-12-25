@@ -1,6 +1,5 @@
 package com.wandera.hw.notificationcenter.user.core.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDateTime;

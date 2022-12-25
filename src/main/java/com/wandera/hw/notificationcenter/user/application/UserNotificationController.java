@@ -11,6 +11,7 @@ import com.wandera.hw.notificationcenter.user.core.port.incoming.DeleteNotificat
 import com.wandera.hw.notificationcenter.user.core.port.incoming.GetNotificationDetail;
 import com.wandera.hw.notificationcenter.user.core.port.incoming.GetNotifications;
 import com.wandera.hw.notificationcenter.user.core.port.incoming.MarkNotificationRead;
+import com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchNotificationException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,16 +52,24 @@ public class UserNotificationController {
                 .build();
 
         var notificationDetail = getUserNotificationDetail.handle(query);
-        var response = notificationDetail.map(UserNotificationDetailResponse::of);
-        return ResponseEntity.of(response);
+
+        return notificationDetail.map(UserNotificationDetailResponse::of)
+                .map(ResponseEntity::of)
+                .orElseThrow(() -> new NoSuchNotificationException("Notification not found"));
     }
 
     @PatchMapping("/notifications/{notificationId}")
     public ResponseEntity<HttpStatus> markNotificationAsRead(@PathVariable String notificationId, @RequestParam String userId) {
         var command = new MarkNotificationReadCommand(userId, notificationId);
         var result = markNotificationAsRead.handle(command);
-        return result ? ResponseEntity.ok().build() :
-                ResponseEntity.badRequest().build();
+
+        if (result) {
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }
+
+        throw new NoSuchNotificationException("Notification not found");
     }
 
     @DeleteMapping("/notifications/{notificationId}")
@@ -68,7 +77,13 @@ public class UserNotificationController {
         var command = new DeleteNotificationCommand(userId, notificationId);
 
         var result = deleteNotification.handle(command);
-        return result ? ResponseEntity.ok().build() :
-                ResponseEntity.badRequest().build();
+
+        if (result) {
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }
+
+        throw new NoSuchNotificationException("Notification not found");
     }
 }

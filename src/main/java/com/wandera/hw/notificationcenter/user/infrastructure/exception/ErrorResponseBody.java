@@ -11,7 +11,7 @@ public record ErrorResponseBody(long timestamp,
                                 String error,
                                 String message,
                                 String path
-                               ) {
+) {
 
     public static ErrorResponseBody of(WebRequest request, HttpStatus status, String message) {
         var requestURI = ((ServletWebRequest) request).getRequest().getRequestURI();

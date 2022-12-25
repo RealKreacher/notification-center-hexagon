@@ -8,7 +8,6 @@ import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationE
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,17 +38,11 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
      */
     @Override
     public Map<NotificationType, List<Notification>> findUserNotifications(String userId) {
-        // ToDo if user is not in the map the Errro response should be shown
-        if(notifications.containsKey(userId)) {
-            return notifications.get(userId)
-                    .stream()
-                    .map(NotificationEntity::toDomainNotification)
-                    .sorted(Notification::compareByDate)
-                    .collect(Collectors.groupingBy(Notification::type));
-        } else {
-            log.error("No user with id: {}", userId);
-            throw new NoSuchUserException("Invalid user ID");
-        }
+        return getUserNotifications(userId)
+                .stream()
+                .map(NotificationEntity::toDomainNotification)
+                .sorted(Notification::compareByDate)
+                .collect(Collectors.groupingBy(Notification::type));
     }
 
     @Override
@@ -60,7 +53,6 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
 
     @Override
     public boolean updateNotification(String notificationId, String userId, Object newValue, String fieldName) {
-        // TODO there should just be exception handled by global aop handler
         return findNotificationEntity(userId, notificationId)
                 .map(entity -> entity.update(newValue, fieldName))
                 .orElse(false);
@@ -68,13 +60,23 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
 
     @Override
     public boolean deleteNotification(String userId, String notificationId) {
-        return notifications.getOrDefault(userId, Collections.emptyList())
+        return getUserNotifications(userId)
                 .removeIf(notification -> notification.getNotificationId().equals(notificationId));
     }
 
     private Optional<NotificationEntity> findNotificationEntity(String userId, String notificationId) {
-        return notifications.getOrDefault(userId, Collections.emptyList()).stream()
+        return getUserNotifications(userId)
+                .stream()
                 .filter(notificationEntity -> Objects.equals(notificationEntity.getNotificationId(), notificationId))
                 .findFirst();
+    }
+
+    private List<NotificationEntity> getUserNotifications(String userId) {
+        if (notifications.containsKey(userId)) {
+            return notifications.get(userId);
+        } else {
+            log.warn("No user with id: {}", userId);
+            throw new NoSuchUserException("Invalid user ID");
+        }
     }
 }

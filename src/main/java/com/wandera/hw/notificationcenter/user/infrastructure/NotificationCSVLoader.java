@@ -2,7 +2,6 @@ package com.wandera.hw.notificationcenter.user.infrastructure;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -10,7 +9,6 @@ import com.wandera.hw.notificationcenter.user.infrastructure.exception.CSVParseE
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +27,7 @@ public class NotificationCSVLoader {
     /**
      * Read csv file and map it to the NotificationEntity objects.
      * The path to the CSV file is defined in application properties data -> filepath
+     *
      * @return Mapped list of NotificationEntity objects.
      */
     public List<NotificationEntity> loadNotifications() {
