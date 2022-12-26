@@ -84,7 +84,7 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
 
     private int findNotificationIndex(Notification notification, List<NotificationEntity> userNotifications) {
         return IntStream.range(0, userNotifications.size())
-                .filter(i -> userNotifications.get(i).equals(notification))
+                .filter(i -> userNotifications.get(i).equalToDomain(notification))
                 .findFirst()
                 .orElse(-1);
     }

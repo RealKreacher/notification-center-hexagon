@@ -48,7 +48,7 @@ public class NotificationEntity {
                 notification.read());
     }
 
-    public boolean equals(Notification notification) {
+    public boolean equalToDomain(Notification notification) {
         return notification.notificationIdAsString().equals(notificationId);
     }
 }

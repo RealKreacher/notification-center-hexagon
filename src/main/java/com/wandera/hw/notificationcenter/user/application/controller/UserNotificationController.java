@@ -13,6 +13,7 @@ import com.wandera.hw.notificationcenter.user.core.port.incoming.GetNotification
 import com.wandera.hw.notificationcenter.user.core.port.incoming.MarkNotificationRead;
 import com.wandera.hw.notificationcenter.user.infrastructure.exception.ErrorResponseBody;
 import com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchNotificationException;
+import com.wandera.hw.notificationcenter.user.infrastructure.logging.LogAccess;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATIONS_URL;
+import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATION_URL;
 
 @Tag(name = "User", description = "User notifications api")
 @RestController
@@ -54,7 +58,8 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @GetMapping("/notifications")
+    @GetMapping(USER_NOTIFICATIONS_URL)
+    @LogAccess(level = "INFO")
     public ResponseEntity<UserNotifications> notifications(@RequestParam String userId) {
         var query = new UserNotificationsQuery(UserId.of(userId));
         var notifications = getUserNotifications.handle(query);
@@ -75,7 +80,8 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @GetMapping("/notifications/{notificationId}")
+    @GetMapping(USER_NOTIFICATION_URL)
+    @LogAccess(level = "INFO")
     public ResponseEntity<UserNotificationDetail> notificationDetail(@PathVariable String notificationId,
                                                                      @RequestParam String userId) {
         var query = UserNotificationDetailQuery.builder()
@@ -101,7 +107,7 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @PatchMapping("/notifications/{notificationId}")
+    @PatchMapping(USER_NOTIFICATION_URL)
     public ResponseEntity<HttpStatus> markNotificationAsRead(@PathVariable String notificationId, @RequestParam String userId) {
         var command = new MarkNotificationReadCommand(userId, notificationId);
         var result = markNotificationAsRead.handle(command);
@@ -126,7 +132,7 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @DeleteMapping("/notifications/{notificationId}")
+    @DeleteMapping(USER_NOTIFICATION_URL)
     public ResponseEntity<HttpStatus> deleteNotification(@PathVariable String notificationId, @RequestParam String userId) {
         var command = new DeleteNotificationCommand(userId, notificationId);
 
