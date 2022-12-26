@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -47,33 +46,6 @@ public class NotificationEntity {
                 notification.title(),
                 notification.detail(),
                 notification.read());
-    }
-
-    // TODO think about this one
-
-    /**
-     * Generic method to update any field.
-     * Maybe this is overkill and bad idea since it kinda couple this entity
-     * with the domain model as Fields are specified in specific user cases.
-     *
-     * @param newValue
-     * @param fieldToUpdate
-     * @return
-     */
-    public boolean update(Object newValue, String fieldToUpdate) {
-        try {
-            Field field = NotificationEntity.class.getDeclaredField(fieldToUpdate);
-            field.setAccessible(true);
-            field.set(this, newValue);
-
-            return true;
-        } catch (NoSuchFieldException e) {
-            log.error("Trying to update non existing field", e);
-            return false;
-        } catch (IllegalAccessException e) {
-            log.error("Updating failed due illegal access to field", e);
-            return false;
-        }
     }
 
     public boolean equals(Notification notification) {
