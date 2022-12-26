@@ -38,11 +38,24 @@ public class NotificationEntity {
         );
     }
 
+    public static NotificationEntity of(Notification notification) {
+        return new NotificationEntity(
+                notification.notificationIdAsString(),
+                notification.userIdAsString(),
+                notification.date(),
+                notification.type().name(),
+                notification.title(),
+                notification.detail(),
+                notification.read());
+    }
+
     // TODO think about this one
+
     /**
      * Generic method to update any field.
      * Maybe this is overkill and bad idea since it kinda couple this entity
      * with the domain model as Fields are specified in specific user cases.
+     *
      * @param newValue
      * @param fieldToUpdate
      * @return
@@ -61,5 +74,9 @@ public class NotificationEntity {
             log.error("Updating failed due illegal access to field", e);
             return false;
         }
+    }
+
+    public boolean equals(Notification notification) {
+        return notification.notificationIdAsString().equals(notificationId);
     }
 }

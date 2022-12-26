@@ -1,10 +1,8 @@
 package com.wandera.hw.notificationcenter.user.core.port.outgoing;
 
 import com.wandera.hw.notificationcenter.user.core.model.Notification;
-import com.wandera.hw.notificationcenter.user.core.model.NotificationType;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface UserNotificationRepository {
@@ -20,7 +18,7 @@ public interface UserNotificationRepository {
      * If there is no user for given userId then NoSuchUserException is thrown and proper error response
      * returned to the client.
      *
-     * @param userId
+     * @param userId ID of user whose notifications will be searched.
      * @return Grouped and sorted notifications for given user
      */
     List<Notification> findUserNotifications(String userId);
@@ -32,24 +30,22 @@ public interface UserNotificationRepository {
      * If there is no user for given userId then NoSuchUserException is thrown and proper error response
      * returned to the client
      *
-     * @param userId
-     * @param notificationId
-     * @return Specified notification of empty Optional
+     * @param userId         ID of user whose notifications will be searched.
+     * @param notificationId ID of notification to be found.
+     * @return Specified notification or empty Optional if notification no found
      */
     Optional<Notification> findUserNotification(String userId, String notificationId);
 
     /**
-     * Update value for specified filed for Notification TODO: Is this really good idea
+     * Update stored notification.<br>
+     * <br>
      * If there is no user for given userId then NoSuchUserException is thrown and proper error response
      * returned to the client
      *
-     * @param notificationId
-     * @param userId
-     * @param newValue
-     * @param fieldName
-     * @return
+     * @param notification updated notification object
+     * @return true if update was successful and false otherwise.
      */
-    boolean updateNotification(String notificationId, String userId, Object newValue, String fieldName);
+    boolean updateNotification(Notification notification);
 
     /**
      * Delete specified notification.<br>
@@ -57,8 +53,8 @@ public interface UserNotificationRepository {
      * If there is no user for given userId then NoSuchUserException is thrown and proper error response
      * returned to the client
      *
-     * @param userId
-     * @param notificationId
+     * @param userId         ID of user whose notifications will be searched.
+     * @param notificationId ID of notification to be deleted.
      * @return if false then notification was not found. Otherwise, the notification was deleted successfully.
      */
     boolean deleteNotification(String userId, String notificationId);

@@ -1,19 +1,18 @@
 package com.wandera.hw.notificationcenter.user.infrastructure;
 
 import com.wandera.hw.notificationcenter.user.core.model.Notification;
-import com.wandera.hw.notificationcenter.user.core.model.NotificationType;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
 import com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchUserException;
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class UserNotificationInMemoryAdapter implements UserNotificationRepository {
@@ -29,7 +28,7 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
      */
     @Override
     public List<Notification> findUserNotifications(String userId) {
-        return getUserNotifications(userId)
+        return findUserNotificationEntities(userId)
                 .stream()
                 .map(NotificationEntity::toDomainNotification)
                 .sorted(Notification::compareByDate)
@@ -49,31 +48,54 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
                 .map(NotificationEntity::toDomainNotification);
     }
 
+    /*
+        Currently the whole notification entity object is replaced.
+        If needed reflection can be used to set single attribute to different value though it is not so nice.
+        Also, more coupling with Notification domain object can be introduced as the NotificationEntity structure
+        will probably be leaked to the domain level.
+     */
     @Override
-    public boolean updateNotification(String notificationId, String userId, Object newValue, String fieldName) {
-        return findNotificationEntity(userId, notificationId)
-                .map(entity -> entity.update(newValue, fieldName))
-                .orElse(false);
+    public boolean updateNotification(Notification notification) {
+        var userID = notification.userIdAsString();
+        var userNotifications = findUserNotificationEntities(userID);
+
+        int entityIndex = findNotificationIndex(notification, userNotifications);
+
+        if (entityIndex < 0) {
+            return false;
+        }
+
+        userNotifications.set(entityIndex, NotificationEntity.of(notification));
+        notifications.put(userID, userNotifications);
+
+        return true;
     }
 
     @Override
     public boolean deleteNotification(String userId, String notificationId) {
-        return getUserNotifications(userId)
+        return findUserNotificationEntities(userId)
                 .removeIf(notification -> notification.getNotificationId().equals(notificationId));
     }
 
     private Optional<NotificationEntity> findNotificationEntity(String userId, String notificationId) {
-        return getUserNotifications(userId)
+        return findUserNotificationEntities(userId)
                 .stream()
                 .filter(notificationEntity -> Objects.equals(notificationEntity.getNotificationId(), notificationId))
                 .findFirst();
+    }
+
+    private int findNotificationIndex(Notification notification, List<NotificationEntity> userNotifications) {
+        return IntStream.range(0, userNotifications.size())
+                .filter(i -> userNotifications.get(i).equals(notification))
+                .findFirst()
+                .orElse(-1);
     }
 
     /*
         If there is no user with given ID exception is thrown.
         The exception is processed in UserNotificationAdvice and error response is generated.
      */
-    private List<NotificationEntity> getUserNotifications(String userId) {
+    private List<NotificationEntity> findUserNotificationEntities(String userId) {
         if (notifications.containsKey(userId)) {
             return notifications.get(userId);
         } else {
