@@ -4,9 +4,11 @@ import com.wandera.hw.notificationcenter.user.core.model.Notification;
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
 import com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchUserException;
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -15,24 +17,20 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Slf4j
+@RequiredArgsConstructor
 public class UserNotificationInMemoryAdapter implements UserNotificationRepository {
 
     private final Map<String, List<NotificationEntity>> notifications;
 
-    public UserNotificationInMemoryAdapter(NotificationCSVLoader csvLoader) {
-        notifications = csvLoader.loadNotifications();
-    }
-
-    /*
-
-     */
     @Override
     public List<Notification> findUserNotifications(String userId) {
         return findUserNotificationEntities(userId)
                 .stream()
                 .map(NotificationEntity::toDomainNotification)
                 .sorted(Notification::compareByDate)
-                .collect(Collectors.groupingBy(Notification::type))
+                .collect(Collectors.groupingBy(Notification::type,
+                        LinkedHashMap::new,
+                        Collectors.toList()))
                 .values()
                 .stream()
                 .reduce((list1, list2) -> {

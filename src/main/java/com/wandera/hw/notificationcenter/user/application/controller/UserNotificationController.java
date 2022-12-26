@@ -42,6 +42,7 @@ public class UserNotificationController {
 
     private final DeleteNotification deleteNotification;
 
+    // TODO Create response when userId not provided
     @Operation(summary = "Get notifications",
             description = "Get list of notifications for given user. Notifications are sorted by date and grouped by type",
             tags = "User")

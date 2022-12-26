@@ -11,11 +11,15 @@ import com.wandera.hw.notificationcenter.user.core.port.incoming.MarkNotificatio
 import com.wandera.hw.notificationcenter.user.core.port.outgoing.UserNotificationRepository;
 import com.wandera.hw.notificationcenter.user.infrastructure.NotificationCSVLoader;
 import com.wandera.hw.notificationcenter.user.infrastructure.UserNotificationInMemoryAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class NotificationConfig {
+
+    @Value("${data.filepath}")
+    private String path;
 
     @Bean
     public GetNotifications getUserNotifications(UserNotificationRepository repository) {
@@ -39,6 +43,7 @@ public class NotificationConfig {
 
     @Bean
     public UserNotificationRepository userNotificationRepository(NotificationCSVLoader csvLoader) {
-        return new UserNotificationInMemoryAdapter(csvLoader);
+        var notifications = csvLoader.loadNotifications(path);
+        return new UserNotificationInMemoryAdapter(notifications);
     }
 }

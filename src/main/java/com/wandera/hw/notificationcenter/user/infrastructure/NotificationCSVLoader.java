@@ -9,7 +9,6 @@ import com.wandera.hw.notificationcenter.user.infrastructure.exception.CSVParseE
 import com.wandera.hw.notificationcenter.user.infrastructure.model.NotificationEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -24,8 +23,6 @@ import java.util.Map;
 @Slf4j
 public class NotificationCSVLoader {
 
-    @Value("${data.filepath}")
-    private String path;
 
     /**
      * Read csv file and map it to the NotificationEntity objects.
@@ -33,7 +30,7 @@ public class NotificationCSVLoader {
      *
      * @return Mapped list of NotificationEntity objects linked to their userID.
      */
-    public Map<String, List<NotificationEntity>> loadNotifications() {
+    public Map<String, List<NotificationEntity>> loadNotifications(String path) {
         var file = new File(path);
         Map<String, List<NotificationEntity>> notifications = new HashMap<>();
 
