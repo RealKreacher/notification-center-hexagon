@@ -18,10 +18,9 @@ import java.util.function.Consumer;
 public class LoggingAOP {
 
     private final Map<String, Consumer<String>> logginMap;
-
-    private static final String INFO = "INFO";
-    private static final String DEBUG = "DEBUG";
-    private static final String TRACE = "TRACE";
+    public static final String INFO = "INFO";
+    public static final String DEBUG = "DEBUG";
+    public static final String TRACE = "TRACE";
 
     public LoggingAOP() {
         logginMap = new HashMap<>();

@@ -33,17 +33,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATIONS_URL;
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATION_URL;
+import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_PREFIX;
+import static com.wandera.hw.notificationcenter.user.infrastructure.logging.LoggingAOP.DEBUG;
+import static com.wandera.hw.notificationcenter.user.infrastructure.logging.LoggingAOP.INFO;
 
 @Tag(name = "User", description = "User notifications api")
 @RestController
-@RequestMapping("/user")
+@RequestMapping(USER_PREFIX)
 @RequiredArgsConstructor
 public class UserNotificationController {
 
     private final GetNotifications getUserNotifications;
     private final GetNotificationDetail getUserNotificationDetail;
     private final MarkNotificationRead markNotificationAsRead;
-
     private final DeleteNotification deleteNotification;
 
     // TODO Create response when userId not provided
@@ -59,7 +61,7 @@ public class UserNotificationController {
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
     @GetMapping(USER_NOTIFICATIONS_URL)
-    @LogAccess(level = "INFO")
+    @LogAccess(level = INFO)
     public ResponseEntity<UserNotifications> notifications(@RequestParam String userId) {
         var query = new UserNotificationsQuery(UserId.of(userId));
         var notifications = getUserNotifications.handle(query);
@@ -81,7 +83,7 @@ public class UserNotificationController {
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
     @GetMapping(USER_NOTIFICATION_URL)
-    @LogAccess(level = "INFO")
+    @LogAccess(level = DEBUG)
     public ResponseEntity<UserNotificationDetail> notificationDetail(@PathVariable String notificationId,
                                                                      @RequestParam String userId) {
         var query = UserNotificationDetailQuery.builder()

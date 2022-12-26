@@ -1,0 +1,3 @@
+bb486f1c-bdbc-4abb-8770-29ee51798763;user4;2022-09-25T11:02:04;INFO;Test notification 1;Notification test description 1.;false
+dd4c6462-6c62-4561-99ae-d154bb4a4fcf;user4;2022-09-23T11:02:09;INFO;Test notification 2;Notification test description 2.;false
+a2cd6365-0bc9-42a0-8161-5316bc535416;user4;2022-09-22T11:02:13;BLOCK;Blocked access 1;Block reason: Test block reason.;false
