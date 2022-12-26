@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATIONS_URL;
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATION_URL;
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_PREFIX;
+import static com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchNotificationException.NOTIFICATION_NOT_FOUND;
 import static com.wandera.hw.notificationcenter.user.infrastructure.logging.LoggingAOP.DEBUG;
 import static com.wandera.hw.notificationcenter.user.infrastructure.logging.LoggingAOP.INFO;
 
@@ -48,7 +49,6 @@ public class UserNotificationController {
     private final MarkNotificationRead markNotificationAsRead;
     private final DeleteNotification deleteNotification;
 
-    // TODO Create response when userId not provided
     @Operation(summary = "Get notifications",
             description = "Get list of notifications for given user. Notifications are sorted by date and grouped by type",
             tags = "User")
@@ -95,7 +95,7 @@ public class UserNotificationController {
 
         return notificationDetail.map(UserNotificationDetail::of)
                 .map(ResponseEntity::of)
-                .orElseThrow(() -> new NoSuchNotificationException("Notification not found"));
+                .orElseThrow(() -> new NoSuchNotificationException(NOTIFICATION_NOT_FOUND));
     }
 
     @Operation(summary = "Mark notification as read",
@@ -120,7 +120,7 @@ public class UserNotificationController {
                     .build();
         }
 
-        throw new NoSuchNotificationException("Notification not found");
+        throw new NoSuchNotificationException(NOTIFICATION_NOT_FOUND);
     }
 
     @Operation(summary = "Delete notification",
@@ -146,6 +146,6 @@ public class UserNotificationController {
                     .build();
         }
 
-        throw new NoSuchNotificationException("Notification not found");
+        throw new NoSuchNotificationException(NOTIFICATION_NOT_FOUND);
     }
 }

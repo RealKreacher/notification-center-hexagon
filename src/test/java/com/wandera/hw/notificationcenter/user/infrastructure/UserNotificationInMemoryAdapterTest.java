@@ -205,8 +205,9 @@ class UserNotificationInMemoryAdapterTest {
 
     @Test
     void deleteNotification_invalid_userId() {
+        var notificationId = notification1.getNotificationId();
         assertThrows(NoSuchUserException.class,
-                () -> repository.deleteNotification("InvalidUserID", notification1.getNotificationId()),
+                () -> repository.deleteNotification("InvalidUserID", notificationId),
                 "Expected NoSuchUserException to be thrown");
     }
 
