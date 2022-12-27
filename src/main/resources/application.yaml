@@ -1,2 +1,12 @@
+server:
+  port: 8080
+  servlet:
+    context-path: "/${spring.application.api-version}"
+
 data:
   filepath: ${NOTIFICATION_DATA:src/main/resources/example-data.csv}
+
+spring:
+  application:
+    name: notification-service
+    api-version: "v1"
