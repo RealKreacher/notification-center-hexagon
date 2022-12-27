@@ -9,5 +9,6 @@ public class URLConstants {
     public static final String USER_NOTIFICATIONS_URL = "/notifications";
 
     public static final String USER_NOTIFICATION_URL = "/notifications/{notificationId}";
+    public static final String USER_NOTIFICATION_URL_TRAILING_SLASH = "/notifications/{notificationId}/";
 
 }

@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATIONS_URL;
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATION_URL;
+import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_NOTIFICATION_URL_TRAILING_SLASH;
 import static com.wandera.hw.notificationcenter.user.application.controller.URLConstants.USER_PREFIX;
 import static com.wandera.hw.notificationcenter.user.infrastructure.exception.NoSuchNotificationException.NOTIFICATION_NOT_FOUND;
 import static com.wandera.hw.notificationcenter.user.infrastructure.logging.LoggingAOP.DEBUG;
@@ -82,7 +83,7 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @GetMapping(USER_NOTIFICATION_URL)
+    @GetMapping({USER_NOTIFICATION_URL, USER_NOTIFICATION_URL_TRAILING_SLASH})
     @LogAccess(level = DEBUG)
     public ResponseEntity<UserNotificationDetail> notificationDetail(@PathVariable String notificationId,
                                                                      @RequestParam String userId) {
@@ -109,7 +110,7 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @PatchMapping(USER_NOTIFICATION_URL)
+    @PatchMapping({USER_NOTIFICATION_URL, USER_NOTIFICATION_URL_TRAILING_SLASH})
     public ResponseEntity<HttpStatus> markNotificationAsRead(@PathVariable String notificationId, @RequestParam String userId) {
         var command = new MarkNotificationReadCommand(userId, notificationId);
         var result = markNotificationAsRead.handle(command);
@@ -134,7 +135,7 @@ public class UserNotificationController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponseBody.class))})
     })
-    @DeleteMapping(USER_NOTIFICATION_URL)
+    @DeleteMapping({USER_NOTIFICATION_URL, USER_NOTIFICATION_URL_TRAILING_SLASH})
     public ResponseEntity<HttpStatus> deleteNotification(@PathVariable String notificationId, @RequestParam String userId) {
         var command = new DeleteNotificationCommand(userId, notificationId);
 

@@ -1,2 +1,2 @@
 data:
-  filepath: src/main/resources/example-data.csv
+  filepath: ${NOTIFICATION_DATA:src/main/resources/example-data.csv}
