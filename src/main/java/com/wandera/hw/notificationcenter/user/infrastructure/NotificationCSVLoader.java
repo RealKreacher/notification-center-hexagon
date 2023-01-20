@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class NotificationCSVLoader {
      */
     public Map<String, List<NotificationEntity>> loadNotifications(String path) {
         var file = new File(path);
-        Map<String, List<NotificationEntity>> notifications = new HashMap<>();
+        Map<String, List<NotificationEntity>> notifications = new ConcurrentHashMap<>();
 
         var entities = readFile(file);
 

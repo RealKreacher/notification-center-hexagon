@@ -50,7 +50,7 @@ public class UserNotificationInMemoryAdapter implements UserNotificationReposito
         Currently the whole notification entity object is replaced.
         If needed reflection can be used to set single attribute to different value though it is not so nice.
         Also, more coupling with Notification domain object can be introduced as the NotificationEntity structure
-        will probably be leaked to the domain level.
+        can be leaked to the domain level.
      */
     @Override
     public boolean updateNotification(Notification notification) {
